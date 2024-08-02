@@ -180,56 +180,46 @@ export const PopupComponent = ({onTogglePopup, onToggleLegend, data, onSelectPro
     <>
       
      
-        <div
-          style={{
-            position: "absolute",
-            top: "150px",
-            right: "20px",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            padding: "20px",
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-            zIndex: 1000,
-            maxHeight: "50vh",
-            overflowY: "scroll",
-            width: "360px",
-          }}
-        >
-          <h3>Feature Data</h3>
-          <div style={{ marginBottom: "20px" }}>
-            <h4>Filter Properties</h4>
-            {Object.keys(selectedProperties).map((property) => (
-              <div key={property}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={selectedProperties[property]}
-                    onChange={() => handlePropertyCheckboxChange(property)}
-                  />
-                  {property}
-                </label>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginBottom: "20px" }}>
+      <div className="modal-container">
+          <div className="dropdown-container">
+      <label className="dropdown-label">
+        <strong>Select Property for Analysis Color:</strong>
+        <select className="dropdown-select" value={selectedProperty} onChange={handleSelectChange}>
+          {Object.keys(selectedProperties).map((property) => (
+            <option key={property} value={property} className="dropdown-option">
+              {property}
+            </option>
+          ))}
+        </select>
+      </label>
+    </div>
+      <div className="checkbox-section">
+      
+      <div style={{ marginBottom: "20px" }}>
+        <h4>Filter Properties</h4>
+        {Object.keys(selectedProperties).map((property) => (
+          <div key={property} className="checkbox-item">
             <label>
-              <strong>Select Property for Color:</strong>
-              <select value={selectedProperty} onChange={handleSelectChange}>
-                {Object.keys(selectedProperties).map((property) => (
-                  <option key={property} value={property}>
-                    {property}
-                  </option>
-                ))}
-              </select>
+              <input
+                type="checkbox"
+                checked={selectedProperties[property]}
+                onChange={() => handlePropertyCheckboxChange(property)}
+              />
+              <span className="indicator"></span>
+              {property}
             </label>
           </div>
+        ))}
+      </div>
+    </div>
+    <h3>Table Data</h3>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ backgroundColor: "#f2f2f2" }}>
                 <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Kecamatan</th>
-                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>ID</th>
+                
                 <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Tahun</th>
-                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Properties</th>
+                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Data</th>
               </tr>
             </thead>
             <tbody>
@@ -238,9 +228,7 @@ export const PopupComponent = ({onTogglePopup, onToggleLegend, data, onSelectPro
                   <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
                     {feature.properties.kecamatan}
                   </td>
-                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                    {feature.properties.id}
-                  </td>
+                  
                   <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
                     {feature.properties.tahun}
                   </td>

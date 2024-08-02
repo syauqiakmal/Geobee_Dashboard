@@ -10,7 +10,7 @@ const Legend = () => {
         zIndex: 1000,
        
       }}>
-      <h4>Value Color</h4>
+      <h4>Analisis by color</h4>
       <div><span style={{ backgroundColor: '#6f4f28' }}></span>70,000+</div>
 <div><span style={{ backgroundColor: '#8b5c2e' }}></span>60,000 - 69,999</div>
 <div><span style={{ backgroundColor: '#a65d2f' }}></span>55,000 - 59,999</div>

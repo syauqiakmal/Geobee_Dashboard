@@ -5,10 +5,66 @@
   height: 100vh; /* Ubah tinggi menjadi 100% dari viewport height */
 }
 
+.modal-container {
+  position: absolute;
+  top: 150px;
+  right: 20px;
+  background-color: #fbfafad4;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+  max-height: 52vh;
+  overflow-y: scroll;
+  width: 360px;
+}
+/* Container styling */
+.dropdown-container {
+  margin-bottom: 20px;
+  max-width: 300px; /* Menjaga lebar maksimum */
+  
+}
+
+/* Label styling */
+.dropdown-label {
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  color: #333;
+  display: block; /* Memastikan label tampil di atas dropdown */
+  margin-bottom: 10px; /* Jarak antara label dan dropdown */
+  margin-top: 15px;
+}
+
+/* Dropdown styling */
+.dropdown-select {
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  padding: 10px;
+  border: 1px solid #cccccc91;
+  border-radius: 10px;
+  background-color: #fbfafad4;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none; /* Menghapus panah dropdown bawaan */
+  outline: none;
+  width: 100%;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+/* Dropdown focus and hover styling */
+.dropdown-select:focus,
+.dropdown-select:hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan lebih dalam saat fokus */
+}
+
+
 /* Legend.css */
 .legend {
   padding: 10px;
-  background: white;
+  background-color: #fbfafad4;
+
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 200px;
@@ -417,6 +473,7 @@ input[type=file]::file-selector-button:hover {
   width: 171px;
 }
 
+
 .menu-logo-container{
   margin-top: 10px;
   margin-left: 8px;
@@ -708,3 +765,98 @@ input[type="radio"]:focus {
 .imagepdf{
   margin-top: 10px;
 }
+
+/* Wrapper for the checkbox section */
+.checkbox-section {
+  font-family: "Inter", sans-serif;
+}
+
+/* Style for each checkbox control container */
+.checkbox-item {
+  display: flex;
+  align-items: center; /* Aligns items vertically centered */
+  position: relative;
+  padding-left: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 10px; /* Spacing between checkboxes */
+}
+
+/* Hide the default checkbox */
+.checkbox-item input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+/* Style for the checkbox indicator */
+.checkbox-item .indicator {
+  position: relative;
+  height: 16px;
+  width: 16px;
+  border: 1px solid rgb(79, 79, 79);
+  background-color: rgba(53, 122, 143, 0.742);
+  transition: background-color 0.3s ease;
+  margin-right: 10px; /* Spacing between the checkbox and label text */
+  display: inline-block; /* Ensures it maintains block-like properties */
+  vertical-align: middle; /* Aligns indicator with label text */
+}
+
+/* Style for the checkbox indicator on hover and focus */
+.checkbox-item:hover input:not([disabled]) ~ .indicator,
+.checkbox-item input:focus ~ .indicator {
+  background-color: rgba(53, 122, 143, 0.955);
+}
+
+/* Style for the checkbox indicator when checked */
+.checkbox-item input:checked ~ .indicator {
+  background: #2aa1c0;
+}
+
+/* Style for the checkbox indicator when checked and focused */
+.checkbox-item:hover input:checked ~ .indicator,
+.checkbox-item input:checked:focus ~ .indicator {
+  background: #0e647d;
+}
+
+/* Style for the checkbox indicator when disabled */
+.checkbox-item input:disabled ~ .indicator {
+  background: #e6e6e6;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Style for the checkmark inside the checkbox */
+.checkbox-item .indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+.checkbox-item input:checked ~ .indicator:after {
+  display: block;
+}
+
+.checkbox-item .indicator:after {
+  left: 5px; /* Adjusted position for checkmark */
+  top: 1px; /* Adjusted position for checkmark */
+  width: 4px; /* Adjusted width for checkmark */
+  height: 8px; /* Adjusted height for checkmark */
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-item input:disabled ~ .indicator:after {
+  border-color: #d2cdcd;
+}
+
+/* Optional: Additional text styling */
+.file-info::after {
+  content: ' only (.zip -> include shapefile, .tif, .tiff, .geojson) < 100mb';
+  font-size: 12px;
+  margin-left: 10px;
+  color: #333;
+}
+
+
