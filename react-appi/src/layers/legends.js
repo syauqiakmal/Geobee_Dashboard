@@ -1,36 +1,48 @@
 // Legend.js
 import React from 'react';
 
-
 const Legend = () => {
   return (
-    <div className="legend"  style={{
+    <div className="legend" style={{
         position: "absolute",
-        
         zIndex: 1000,
-       
       }}>
       <h4>Analisis by color</h4>
-      <div><span style={{ backgroundColor: '#6f4f28' }}></span>70,000+</div>
-<div><span style={{ backgroundColor: '#8b5c2e' }}></span>60,000 - 69,999</div>
-<div><span style={{ backgroundColor: '#a65d2f' }}></span>55,000 - 59,999</div>
-<div><span style={{ backgroundColor: '#d4733f' }}></span>50,000 - 54,999</div>
-<div><span style={{ backgroundColor: '#cc3333' }}></span>40,000 - 49,999</div>
-<div><span style={{ backgroundColor: '#e60000' }}></span>30,000 - 39,999</div>
-<div><span style={{ backgroundColor: '#ff3333' }}></span>25,000 - 29,999</div>
-<div><span style={{ backgroundColor: '#ff6666' }}></span>20,000 - 24,999</div>
-<div><span style={{ backgroundColor: '#ff9999' }}></span>15,000 - 19,999</div>
-<div><span style={{ backgroundColor: '#ffb3b3' }}></span>10,000 - 14,999</div>
-<div><span style={{ backgroundColor: '#ffd9d9' }}></span>5,000 - 9,999</div>
-<div><span style={{ backgroundColor: '#ffe6e6' }}></span>1,000 - 4,999</div>
-<div><span style={{ backgroundColor: '#f2f2f2' }}></span>100 - 999</div>
-<div><span style={{ backgroundColor: '#f2f2f2' }}></span>20 - 99</div>
-<div><span style={{ backgroundColor: '#f2f2f2' }}></span>15 - 19</div>
-<div><span style={{ backgroundColor: '#f2f2f2' }}></span>5 - 14</div>
-<div><span style={{ backgroundColor: '#ffffff' }}></span>0 - 4</div>
-
-
-
+      
+      <div className="legend-section">
+        <h5>Pengurangan Sampah</h5>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffffe0' }}></span>50,000+</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffff99' }}></span>30,000 - 49,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffcc00' }}></span>10,000 - 29,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff9900' }}></span>5,000 - 9,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff0000' }}></span>0 - 4,999</div>
+      </div>
+      
+      <div className="legend-section">
+        <h5>Penanganan Sampah</h5>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffffe0' }}></span>50,000+</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffff99' }}></span>40,000 - 49,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffcc00' }}></span>20,000 - 39,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff9900' }}></span>10,000 - 19,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff0000' }}></span>0 - 9,999</div>
+      </div>
+      
+      <div className="legend-section">
+        <h5>Jumlah Armada Truk</h5>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffffe0' }}></span>20+</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffff99' }}></span>15 - 19</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffcc00' }}></span>10 - 14</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff0000' }}></span>0 - 9</div>
+      </div>
+      
+      <div className="legend-section">
+        <h5>Jumlah Penduduk</h5>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffffe0' }}></span>200,000+</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffff99' }}></span>150,000 - 199,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffcc00' }}></span>100,000 - 149,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff9900' }}></span>85,000 - 99,999</div>
+        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff0000' }}></span>0 - 84,999</div>
+      </div>
     </div>
   );
 };

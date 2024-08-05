@@ -5,6 +5,8 @@
   height: 100vh; /* Ubah tinggi menjadi 100% dari viewport height */
 }
 
+
+
 .modal-container {
   position: absolute;
   top: 150px;
@@ -60,17 +62,18 @@
 }
 
 
-/* Legend.css */
 .legend {
   padding: 10px;
   background-color: #fbfafad4;
-
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 200px;
+  width: 250px; /* Increased width for better readability */
   font-family: Arial, sans-serif;
+  position: absolute; /* Ensure positioning is absolute */
   right: 430px;
   top: 150px;
+  max-height: 400px; /* Adjust height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .legend h4 {
@@ -78,20 +81,26 @@
   font-size: 16px;
 }
 
-.legend div {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-  
-  
+.legend-section {
+  margin-bottom: 20px;
 }
 
-.legend span {
+.legend-section h5 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.legend-item {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.legend-color {
   display: inline-block;
   width: 20px;
   height: 20px;
   margin-right: 5px;
-  
   border: 1px solid #ccc;
 }
 

@@ -289,7 +289,7 @@ export const Map = ({ hideComponents }) => {
       try {
         const years = [2020, 2023, 2024];
         const fetchPromises = years.map(year => 
-          fetch(`http://localhost:8000/data/tangerang_data_${year}`).then(res => res.json())
+          fetch(`http://localhost:8000/data/Tangerang_baru_${year}`).then(res => res.json())
         );
         const [data2020, data2023, data2024] = await Promise.all(fetchPromises);
   
@@ -500,41 +500,56 @@ export const Map = ({ hideComponents }) => {
         />
         <ShowCoordinates />
 
+        {
+  uploadedFiles.map((file, index) => {
+    if (
+      file.checked && // Only show checked files
+      !file.name.endsWith(".tif") &&
+      !file.name.endsWith(".tiff") &&
+      file.data
+    ) {
+      return (
         <button
-        onClick={() => {
-          togglePopup();
-          toggleLegend(); // Toggle both popup and legend visibility
-        }}
-        style={{
-          position: "absolute",
-          top: "150px",
-          right: "20px",
-          width: "50px",
-          height: "50px",
-          borderRadius: "50%",
-          backgroundColor: "white",
-          color: "black",
-          border: "none",
-          cursor: "pointer",
-          backgroundImage: `url(${logo})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "40px",
-          backgroundPosition: "center",
-          zIndex: 1000,
-          transition: "transform 0.3s ease-out",
-        }}
-        onMouseEnter={(e) => e.target.style.transform = "scale(1.1)"}
-        onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
-      />
-      {showPopup && (
-        <PopupComponent
-          data={geojsonData} // Ensure geojsonData is defined and passed correctly
-          onSelectPropertyChange={handleSelectPropertyChange}
-          onTogglePopup={togglePopup}
-          onToggleLegend={toggleLegend}
+          key={index} // Ensure each button has a unique key
+          onClick={() => {
+            togglePopup();
+            toggleLegend(); // Toggle both popup and legend visibility
+          }}
+          style={{
+            position: "absolute",
+            top: "150px",
+            right: "20px",
+            width: "50px",
+            height: "50px",
+            borderRadius: "50%",
+            backgroundColor: "white",
+            color: "black",
+            border: "none",
+            cursor: "pointer",
+            backgroundImage: `url(${logo})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "40px",
+            backgroundPosition: "center",
+            zIndex: 1000,
+            transition: "transform 0.3s ease-out",
+          }}
+          onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
+          onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
         />
-      )}
-      {showLegend && <Legend />}
+      );
+    }
+    return null; // Return null for files that do not meet the conditions
+  })
+}
+{showPopup && (
+  <PopupComponent
+    data={geojsonData} // Ensure geojsonData is defined and passed correctly
+    onSelectPropertyChange={handleSelectPropertyChange}
+    onTogglePopup={togglePopup}
+    onToggleLegend={toggleLegend}
+  />
+)}
+{showLegend && <Legend />}
       </MapContainer>
       
     </div>

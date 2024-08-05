@@ -14,8 +14,8 @@ import tempfile
 import shapefile
 from rasterio.io import MemoryFile
 import zipfile
-import torchvision.transforms as transforms
 
+import numpy as np
 
 import re
 # import traceback
@@ -356,59 +356,59 @@ async def get_raster(table_name: str):
             password="15032003"
         )
         cursor = conn.cursor()
-        
+
         query = f'SELECT ST_AsGDALRaster(rast, \'GTiff\') FROM "{normalized_table_name}"'
         cursor.execute(query)
         raster_rows = cursor.fetchall()
-        
+
         raster_images = []
-        bounds = None
+        bounds = []
         for row in raster_rows:
             raster_data = row[0]
-            
+
             with MemoryFile(raster_data) as memfile:
                 with memfile.open() as dataset:
+                    # Handle multi-band raster
                     data = dataset.read()
+
                     if data is None or data.shape[0] == 0:
                         raise HTTPException(status_code=404, detail="No valid raster data available.")
-                    
-                    # Use torchvision transforms to process data
-                    transform = transforms.Compose([
-                        transforms.ToPILImage(),
-                        transforms.Resize(256),
-                        transforms.ToTensor()
-                    ])
-                    
-                    transformed_data = transform(data)
-                    raster_images.append(transformed_data)
-                    
-                    bbox = dataset.bounds
-                    current_bounds = [[bbox.bottom, bbox.left], [bbox.top, bbox.right]]
-                    if bounds is None:
-                        bounds = current_bounds
+
+                    if data.shape[0] == 1:
+                        # Single-band (grayscale)
+                        data_normalized = ((data[0] - data[0].min()) / (data[0].max() - data[0].min()) * 255).astype('uint8')
+                        image = Image.fromarray(data_normalized, mode='L')
                     else:
-                        bounds[0][0] = min(bounds[0][0], current_bounds[0][0])
-                        bounds[0][1] = min(bounds[0][1], current_bounds[0][1])
-                        bounds[1][0] = max(bounds[1][0], current_bounds[1][0])
-                        bounds[1][1] = max(bounds[1][1], current_bounds[1][1])
-        
+                        # Multi-band (color)
+                        bands = []
+                        for band in data:
+                            band_normalized = ((band - band.min()) / (band.max() - band.min()) * 255).astype('uint8')
+                            bands.append(band_normalized)
+                        
+                        # Combine bands into a color image
+                        image = Image.merge('RGB', [Image.fromarray(band) for band in bands[:3]])  # Use the first 3 bands for RGB
+
+                    img_byte_array = BytesIO()
+                    image.save(img_byte_array, format='PNG')
+                    raster_images.append(img_byte_array.getvalue())
+
+                    bbox = dataset.bounds
+                    bounds = [[bbox.bottom, bbox.left], [bbox.top, bbox.right]]
+
         cursor.close()
         conn.close()
-        
+
         if not raster_images:
             raise HTTPException(status_code=404, detail="No raster images available.")
-        
-        return {
-            "raster_images": raster_images,
-            "bounds": bounds
-        }
+
+        encoded_raster_images = [base64.b64encode(img).decode() for img in raster_images]
+
+        return JSONResponse(content={"raster_images": encoded_raster_images, "bounds": bounds})
     except HTTPException:
         raise
     except Exception as e:
         print("Error:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    
-    
 @app.get("/geojson/{table_name}")
 async def get_geojson(table_name: str):
     try:

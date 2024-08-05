@@ -6,46 +6,59 @@ import { createCustomIcon } from '../icons/customIcon';
 import L from 'leaflet';
 
 // Helper function to calculate color based on selected property
-const calculateColor = (value) => {
-  // Brown shades for highest values
-  if (value >= 70000) return '#6f4f28'; // Dark brown
-  if (value >= 60000) return '#8b5c2e'; // Medium brown
-  if (value >= 55000) return '#a65d2f'; // Brownish red
-  if (value >= 50000) return '#d4733f'; // Light brown
+const calculateColor = (value, selectedProperty) => {
+  let color = '#ff0000'; // Default to 'red'
 
-  // Deep red shades for high values
-  if (value >= 40000) return '#cc3333'; // Deep red
-  if (value >= 30000) return '#e60000'; // Bright red
-  if (value >= 25000) return '#ff3333'; // Red
-
-  // Lighter red shades for medium values
-  if (value >= 20000) return '#ff6666'; // Light red
-
-  // Transition to very light colors for lower values
-  if (value >= 15000) return '#ff9999'; // Very light red
-  if (value >= 10000) return '#ffb3b3'; // Pale pink
-  if (value >= 5000) return '#ffd9d9'; // Almost white
-  if (value >= 1000) return '#ffe6e6'; // Slightly off-white
-
-  // Light gray for values between 5 and 100
-  if (value >= 100) return '#f2f2f2'; // Very light gray
-  if (value >= 50) return '#f2f2f2'; // Very light gray
-  if (value >= 20) return '#f2f2f2'; // Very light gray
-  if (value >= 15) return '#f2f2f2'; // Very light gray
-
-  
-
-  // White for values below 5
-  if (value >= 5) return '#ffffff'; // White
-
-  return '#ffffff'; // White for values below 5
+  // Define ranges and colors for each property
+  const ranges = {
+    pengurangan_sampah: [
+      { min: 50000, color: '#ffffe0' }, // Putih
+      { min: 30000, color: '#ffff99' }, // Kuning pucat
+      { min: 10000, color: '#ffcc00' }, // Kuning
+      { min: 5000, color: '#ff9900' },  // Oranye
+      { min: 0, color: '#ff0000' }       // Merah-oranye
+    ],
+    penanganan_sampah: [
+      { min: 50000, color: '#ffffe0' }, // Putih
+      { min: 40000, color: '#ffff99' }, // Kuning pucat
+      { min: 30000, color: '#ffcc00' }, // Kuning
+      { min: 20000, color: '#ff9900' }, // Oranye
+      { min: 0, color: '#ff0000' }      // Merah-oranye
+    ],
+    jumlah_armada_truk: [
+      { min: 20, color: '#ffffe0' }, // Putih
+      { min: 15, color: '#ffff99' }, // Kuning pucat
+      { min: 10, color: '#ffcc00' }, // Kuning
+      { min: 0, color: '#ff0000' }   // Merah-oranye
+    ],
+    jumlah_penduduk: [
+      { min: 200000, color: '#ffffe0' }, // Putih
+      { min: 150000, color: '#ffff99' }, // Kuning pucat
+      { min: 100000, color: '#ffcc00' }, // Kuning
+      { min: 90000, color: '#ff9900' },  // Oranye
+      { min: 0, color: '#ff0000' }       // Merah-oranye
+    ]
 };
 
 
 
+  // Get the color range for the selected property
+  const propertyRanges = ranges[selectedProperty] || [];
+  console.log(`Selected Property: ${selectedProperty}`);
+  console.log(`Value: ${value}`);
+  console.log(`Property Ranges:`, propertyRanges);
 
+  // Find the color based on the value
+  for (const range of propertyRanges) {
+    if (value >= range.min) {
+      color = range.color;
+      break;
+    }
+  }
 
-
+  console.log(`Selected Color: ${color}`);
+  return color;
+};
 
 // Function to get the style for each feature
 export const getFeatureStyle = (feature, selectedProperty) => {
@@ -56,7 +69,7 @@ export const getFeatureStyle = (feature, selectedProperty) => {
   console.log(`Value of ${selectedProperty}:`, value);
 
   if (value !== undefined) {
-    color = calculateColor(value);
+    color = calculateColor(value, selectedProperty);
   }
 
   return {
@@ -65,6 +78,8 @@ export const getFeatureStyle = (feature, selectedProperty) => {
     fillOpacity: 0.7,
   };
 };
+
+
 
 const formatValue = (value) => {
   if (typeof value === 'object' && value !== null) {
@@ -144,7 +159,7 @@ export const PopupComponent = ({onTogglePopup, onToggleLegend, data, onSelectPro
       const initialProperties = {};
       data.features.forEach((feature) => {
         Object.keys(feature.properties).forEach((key) => {
-          if (key !== 'geom' && key !== 'kecamatan' && key !== 'id' && key !== 'tahun') {
+          if (key !== 'geom' && key !== 'kecamatan' && key !== 'id' && key !== 'tahun' && key !== 'kode_kecam') {
             initialProperties[key] = initialProperties[key] || false;
           }
         });
@@ -217,6 +232,7 @@ export const PopupComponent = ({onTogglePopup, onToggleLegend, data, onSelectPro
             <thead>
               <tr style={{ backgroundColor: "#f2f2f2" }}>
                 <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Kecamatan</th>
+                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Kode kecamatan</th>
                 
                 <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Tahun</th>
                 <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Data</th>
@@ -227,6 +243,9 @@ export const PopupComponent = ({onTogglePopup, onToggleLegend, data, onSelectPro
                 <tr key={feature.properties.kecamatan} style={{ backgroundColor: "#fafafa" }}>
                   <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
                     {feature.properties.kecamatan}
+                  </td>
+                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
+                    {feature.properties.kode_kecam}
                   </td>
                   
                   <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
