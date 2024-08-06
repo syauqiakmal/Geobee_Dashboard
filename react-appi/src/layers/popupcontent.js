@@ -31,14 +31,14 @@ const calculateColor = (value, selectedProperty) => {
       { min: 10, color: '#ffcc00' }, // Kuning
       { min: 0, color: '#ff0000' }   // Merah-oranye
     ],
-    jumlah_penduduk: [
-      { min: 200000, color: '#ffffe0' }, // Putih
-      { min: 150000, color: '#ffff99' }, // Kuning pucat
-      { min: 100000, color: '#ffcc00' }, // Kuning
-      { min: 90000, color: '#ff9900' },  // Oranye
-      { min: 0, color: '#ff0000' }       // Merah-oranye
+    
+    clustering: [
+      { min: 2, color: '#ffcc00' }, // Oranye
+      { min: 1, color: '#ff9900' }, // Kuning
+      { min: 0, color: '#ff0000' }, // Merah
+      
     ]
-};
+  };
 
 
 
@@ -73,9 +73,10 @@ export const getFeatureStyle = (feature, selectedProperty) => {
   }
 
   return {
-    color: color,
-    weight: 2,
-    fillOpacity: 0.7,
+    color: '#000000',    // Black border color
+    weight: 0.5,           // Thicker border
+    fillColor: color,    // Fill color based on the `calculateColor` function
+    fillOpacity: 0.5,   // Fill opacity
   };
 };
 

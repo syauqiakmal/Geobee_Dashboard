@@ -27,8 +27,7 @@ export const Map = ({ hideComponents }) => {
   const [isContinentsVisible, setIsContinentsVisible] = useState(false);
   const [geojsonData, setGeojsonData] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [isContinentsCheckboxEnabled, setIsContinentsCheckboxEnabled] =
-    useState(true);
+  const [isContinentsCheckboxEnabled, setIsContinentsCheckboxEnabled] = useState(true);
   const [isUploadCheckboxEnabled, setIsUploadCheckboxEnabled] = useState(true);
   const mapRef = useRef(null);
   const [isNewUpload, setIsNewUpload] = useState(false);
@@ -137,12 +136,7 @@ export const Map = ({ hideComponents }) => {
     setBounds(selectedBounds && selectedBounds.isValid() ? selectedBounds : null);
     setIsNewUpload(true); // Trigger map update
   };
-  
-  
-  
-  
-  
-  
+   
   
   
 
@@ -288,36 +282,68 @@ export const Map = ({ hideComponents }) => {
     const fetchAllData = async () => {
       try {
         const years = [2020, 2023, 2024];
-        const fetchPromises = years.map(year => 
+  
+        // Fetching GeoJSON data
+        const geojsonPromises = years.map(year =>
           fetch(`http://localhost:8000/data/Tangerang_baru_${year}`).then(res => res.json())
         );
-        const [data2020, data2023, data2024] = await Promise.all(fetchPromises);
   
+        // Fetching cluster data
+        const clusterPromises = years.map(year =>
+          fetch(`http://localhost:8000/data/tangerang_cluster_${year}`).then(res => res.json())
+        );
+  
+        // Waiting for both fetches to complete
+        const [geojsonData2020, geojsonData2023, geojsonData2024] = await Promise.all(geojsonPromises);
+        const [clusterData2020, clusterData2023, clusterData2024] = await Promise.all(clusterPromises);
+  
+        // Prepare the files data
         const newFiles = [
           {
             name: "Kecamatan Kota Tangerang 2020",
-            data: data2020,
-            checked: false, // Set to false initially
-            selectedColumns: Object.keys(data2020.features[0].properties),
+            data: geojsonData2020,
+            checked: false,
+            selectedColumns: Object.keys(geojsonData2020.features[0].properties),
           },
           {
             name: "Kecamatan Kota Tangerang 2023",
-            data: data2023,
-            checked: false, // Set to false initially
-            selectedColumns: Object.keys(data2023.features[0].properties),
+            data: geojsonData2023,
+            checked: false,
+            selectedColumns: Object.keys(geojsonData2023.features[0].properties),
           },
           {
             name: "Kecamatan Kota Tangerang 2024",
-            data: data2024,
-            checked: true,  // Set to true initially
-            selectedColumns: Object.keys(data2024.features[0].properties),
+            data: geojsonData2024,
+            checked: false,
+            selectedColumns: Object.keys(geojsonData2024.features[0].properties),
+          },
+          {
+            name: "Analisa 2020",
+            data: clusterData2020,
+            checked: false,
+            selectedColumns: Object.keys(clusterData2020.features[0].properties),
+          },
+          {
+            name: "Analisa 2023",
+            data: clusterData2023,
+            checked: false,
+            selectedColumns: Object.keys(clusterData2023.features[0].properties),
+          },
+          {
+            name: "Analisa 2024",
+            data: clusterData2024,
+            checked: true,
+            selectedColumns: Object.keys(clusterData2024.features[0].properties),
           },
         ];
   
+        // Update state
         setUploadedFiles([...uploadedFiles, ...newFiles]);
-        setGeojsonData(data2024); // Set data for 2024 as default
+        setGeojsonData(clusterData2024); // Set data for 2024 as default
   
-        const bounds = [data2020, data2023, data2024].flatMap(data => data.features.map(f => f.bounds));
+        // Compute bounds
+        const bounds = [geojsonData2020, geojsonData2023, geojsonData2024]
+          .flatMap(data => data.features.map(f => f.bounds));
         if (bounds.length) {
           setBounds(L.latLngBounds(bounds));
         }

@@ -35,14 +35,25 @@ const Legend = () => {
         <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff0000' }}></span>0 - 9</div>
       </div>
       
+      
+
       <div className="legend-section">
-        <h5>Jumlah Penduduk</h5>
-        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffffe0' }}></span>200,000+</div>
-        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffff99' }}></span>150,000 - 199,999</div>
-        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ffcc00' }}></span>100,000 - 149,999</div>
-        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff9900' }}></span>85,000 - 99,999</div>
-        <div className="legend-item"><span className="legend-color" style={{ backgroundColor: '#ff0000' }}></span>0 - 84,999</div>
-      </div>
+  <h5>Clustering</h5>
+  <div className="legend-item">
+    <span className="legend-color" style={{ backgroundColor: '#ffcc00' }}></span>
+    <span className="legend-description">Cluster 2: Kecamatan dengan nilai sedang di ketiga variabel</span>
+  </div>
+  <div className="legend-item">
+    <span className="legend-color" style={{ backgroundColor: '#ff9900' }}></span>
+    <span className="legend-description">Cluster 1: Kecamatan dengan penanganan sampah dan jumlah armada truk tinggi, tetapi pengurangan sampah rendah</span>
+  </div>
+  <div className="legend-item">
+    <span className="legend-color" style={{ backgroundColor: '#ff0000' }}></span>
+    <span className="legend-description">Cluster 0: Kecamatan dengan pengurangan sampah tinggi tetapi penanganan sampah dan jumlah armada truk rendah</span>
+  </div>
+</div>
+
+
     </div>
   );
 };
