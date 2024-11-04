@@ -16,6 +16,7 @@ const Menu = ({
   isUploadCheckboxEnabled,
   handleColumnSelection,
   handleRasterFile,
+  hideComponents,
 }) => {
   const [dropdownStates, setDropdownStates] = useState({});
   const menuRef = useRef(null);
@@ -116,8 +117,27 @@ const Menu = ({
               </label>
             </div>
           </li>
+          <li>
+            <div className="testing">
+              <label
+                className="nameMenu"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <input
+                  type="radio"
+                  name="mapOption"
+                  value="Maplibre"
+                  checked={selectedOption === "Maplibre"}
+                  onChange={() => handleOptionChange("Maplibre")}
+                />
+                <p> 3D Maps</p>
+              </label>
+            </div>
+          </li>
+          
           <hr className="divider" /> {/* Pembatas */}
-          <li className="inputshp">
+          {!hideComponents && selectedOption !== "Maplibre" && (
+            <li className="inputshp">
             <label className="choose_file">
               <input
                 type="file"
@@ -126,7 +146,7 @@ const Menu = ({
                 onClick={(e) => {
                   if (e.target.files.length > 0) {
                     const file = e.target.files[0];
-                    const maxSize = 100 * 1024 * 1024; // 50 MB in bytes
+                    const maxSize = 300 * 1024 * 1024; // 50 MB in bytes
                     if (file.size > maxSize) {
                       alert(
                         "File size exceeds 100 MB. Please upload a smaller file."
@@ -139,9 +159,9 @@ const Menu = ({
                 disabled={!isUploadCheckboxEnabled}
               />
             </label>
-          </li>
+          </li>)}
           <br></br>
-          {uploadedFiles.map((file, index) => (
+          {!hideComponents && selectedOption !== "Maplibre" && uploadedFiles.map((file, index) => (
             <li key={index}>
               <div className="testing">
                 <details

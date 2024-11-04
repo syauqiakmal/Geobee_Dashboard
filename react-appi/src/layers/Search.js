@@ -76,12 +76,13 @@ const clearInput = () => {
       onMouseLeave={() => setIsExpanded(searchText !== '')} style={{
         position: "absolute",
         top: "1%",
-        left: "94%",
-        transform: "translate(-50%, 0)", // Translasi horizontal dikoreksi
+        left: "98.9%",
+        transform: "translate(-100%, 0)", // Translasi horizontal dikoreksi
         zIndex: 1000,
       }}>
-  <input
-    className="srch"
+    
+<input 
+    className={`srch ${isExpanded ? "expanded" : ""}`}
     type="text"
     value={searchText}
     onChange={handleSearchInputChange}
@@ -89,13 +90,6 @@ const clearInput = () => {
     placeholder="Search..."
     required
   />
-  <datalist id="searchSuggestions">
-    {suggestions.map((suggestion, index) => (
-      <option key={index} value={suggestion} />
-    ))}
-  </datalist>
-  
-  <button type="submit" className="fa fa-search"></button>
   <a
   href="#"
   onClick={clearInput}
@@ -103,6 +97,14 @@ const clearInput = () => {
 >
   &#10005;
 </a>
+<datalist id="searchSuggestions">
+    {suggestions.map((suggestion, index) => (
+      <option key={index} value={suggestion} />
+    ))}
+  </datalist>
+  
+  <button type="submit" className="fa fa-search"></button>
+
 </form>
 
 

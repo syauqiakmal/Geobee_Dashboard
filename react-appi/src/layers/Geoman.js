@@ -1,5 +1,5 @@
 import  { useEffect, useRef, useState } from 'react';
-import { defaultIcon } from '../icons/defaultIcon';
+import { defaultIcon } from '../icons/defaultIcon.js';
 
 import 'leaflet/dist/leaflet.css'
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
@@ -7,8 +7,8 @@ import { useGeomanControls } from 'react-leaflet-geoman-v2'
 import geodesic from "geographiclib-geodesic";
 import { useMap } from 'react-leaflet';
 import L from "leaflet";
-import { ColorPickerControl } from './ColorPicker';
-import { createCustomIcon } from '../icons/customIcon';
+import { ColorPickerControl } from './ColorPicker.js';
+import { createCustomIcon } from '../icons/customIcon.js';
 
 
 

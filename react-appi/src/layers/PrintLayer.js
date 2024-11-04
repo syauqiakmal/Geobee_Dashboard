@@ -1,5 +1,5 @@
 import logo from "../Logo/Printer.png";
-import { Map } from "../Map/Map";
+import { Map } from "../Map/Map.js";
 
 import React, { useState, useRef, useCallback } from "react";
 import { toPng } from "html-to-image";

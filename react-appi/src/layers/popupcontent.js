@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "../Logo/trash-bin.png";
 
-import { createCustomIcon } from '../icons/customIcon';
+import { createCustomIcon } from '../icons/customIcon.js';
 
 import L from 'leaflet';
 
@@ -11,32 +11,32 @@ const calculateColor = (value, selectedProperty) => {
 
   // Define ranges and colors for each property
   const ranges = {
-    pengurangan_sampah: [
-      { min: 50000, color: '#ffffe0' }, // Putih
-      { min: 30000, color: '#ffff99' }, // Kuning pucat
-      { min: 10000, color: '#ffcc00' }, // Kuning
-      { min: 5000, color: '#ff9900' },  // Oranye
-      { min: 0, color: '#ff0000' }       // Merah-oranye
+    recycled: [
+      { min: 50000, color: '#ffffe0' }, // White
+      { min: 30000, color: '#ffff99' }, // Pale yellow
+      { min: 10000, color: '#ffcc00' }, // Yellow
+      { min: 5000, color: '#ff9900' },  // Orange
+      { min: 0, color: '#ff0000' }       // Red-orange
     ],
-    penanganan_sampah: [
-      { min: 50000, color: '#ffffe0' }, // Putih
-      { min: 40000, color: '#ffff99' }, // Kuning pucat
-      { min: 30000, color: '#ffcc00' }, // Kuning
-      { min: 20000, color: '#ff9900' }, // Oranye
-      { min: 0, color: '#ff0000' }      // Merah-oranye
+    total_wst: [
+      { min: 50000, color: '#ffffe0' }, // White
+      { min: 40000, color: '#ffff99' }, // Pale yellow
+      { min: 30000, color: '#ffcc00' }, // Yellow
+      { min: 20000, color: '#ff9900' }, // Orange
+      { min: 0, color: '#ff0000' }      // Red-orange
     ],
-    jumlah_armada_truk: [
-      { min: 20, color: '#ffffe0' }, // Putih
-      { min: 15, color: '#ffff99' }, // Kuning pucat
-      { min: 10, color: '#ffcc00' }, // Kuning
-      { min: 0, color: '#ff0000' }   // Merah-oranye
+    truck_qty: [
+      { min: 20, color: '#ffffe0' }, // White
+      { min: 15, color: '#ffff99' }, // Pale yellow
+      { min: 10, color: '#ffcc00' }, // Yellow
+      { min: 0, color: '#ff0000' }   // Red-orange
     ],
-    
+
     clustering: [
-      { min: 2, color: '#ffcc00' }, // Oranye
-      { min: 1, color: '#ff9900' }, // Kuning
-      { min: 0, color: '#ff0000' }, // Merah
-      
+      { min: 2, color: '#ffcc00' }, // Orange
+      { min: 1, color: '#ff9900' }, // Yellow
+      { min: 0, color: '#ff0000' }, // Red
+
     ]
   };
 
@@ -100,11 +100,14 @@ export const onEachFeature = (feature, layer, uploadedFiles, selectedProperty) =
   if (fileIndex === -1) return;
 
   const selectedColumns = uploadedFiles[fileIndex]?.selectedColumns || [];
-  let propertiesTable = '<table style="border-collapse: collapse; width: 100%;">';
+  
+  // Adding a container for both horizontal and vertical scrolling
+  let propertiesTable = '<div style="max-width: 300px; max-height: 200px; overflow: auto;">'; // Max height for vertical scroll
+  propertiesTable += '<table style="border-collapse: collapse; width: 100%;">'; // Set width of the table
 
   if (feature.properties) {
     for (let key in feature.properties) {
-      if (selectedColumns.includes(key) && feature.properties[key] !== '' && feature.properties[key] !== '0' && key !== 'geom' && key !== 'id' && feature.properties[key] !== null) {
+      if (selectedColumns.includes(key) && feature.properties[key] !== undefined && key !== 'geom' && key !== 'id')  {
         const formattedValue = formatValue(feature.properties[key]);
         propertiesTable += `
           <tr style="border-bottom: 1px solid #ddd;">
@@ -114,10 +117,10 @@ export const onEachFeature = (feature, layer, uploadedFiles, selectedProperty) =
       }
     }
 
-    propertiesTable += '</table>';
+    propertiesTable += '</table></div>'; // Close the table and div
 
-    let popupContent = '<div>';
-    if (propertiesTable !== '<table style="border-collapse: collapse; width: 100%;"></table>') {
+    let popupContent = '<div style="max-width: 300px;">'; // Set max-width for the popup
+    if (propertiesTable !== '<div style="max-width: 300px; max-height: 200px; overflow: auto;"><table style="border-collapse: collapse; width: 100%;"></table></div>') {
       popupContent += '<h3>Table Data</h3>' + propertiesTable;
     }
     popupContent += '</div>';
@@ -126,6 +129,7 @@ export const onEachFeature = (feature, layer, uploadedFiles, selectedProperty) =
       layer.bindPopup(popupContent);
     }
   }
+
 
   if (feature.geometry && feature.geometry.type === 'Point') {
     console.log("Nilai Lokasi:", feature.properties.Lokasi);
@@ -141,27 +145,28 @@ export const onEachFeature = (feature, layer, uploadedFiles, selectedProperty) =
     }
   }
 
-  layer.setStyle(getFeatureStyle(feature, selectedProperty)); // Set style based on selected property
+  // layer.setStyle(getFeatureStyle(feature, selectedProperty)); // Set style based on selected property
 };
 
-export const PopupComponent = ({onTogglePopup, onToggleLegend, data, onSelectPropertyChange }) => {
+
+export const PopupComponent = ({ onTogglePopup, onToggleLegend, data, onSelectPropertyChange }) => {
   const [features, setFeatures] = useState([]);
   const [selectedProperties, setSelectedProperties] = useState({});
-  const [selectedProperty, setSelectedProperty] = useState('penanganan_sampah'); // Default property
-
+  const [selectedProperty, setSelectedProperty] = useState('clustering'); // Default property
 
   const handleClick = () => {
     onTogglePopup();
     onToggleLegend();
   };
+
   useEffect(() => {
     if (data && data.features.length > 0) {
       setFeatures(data.features);
       const initialProperties = {};
       data.features.forEach((feature) => {
         Object.keys(feature.properties).forEach((key) => {
-          if (key !== 'geom' && key !== 'kecamatan' && key !== 'id' && key !== 'tahun' && key !== 'kode_kecam') {
-            initialProperties[key] = initialProperties[key] || false;
+          if (key !== 'geom') {
+            initialProperties[key] = initialProperties[key] || true;
           }
         });
       });
@@ -194,105 +199,86 @@ export const PopupComponent = ({onTogglePopup, onToggleLegend, data, onSelectPro
 
   return (
     <>
-      
-     
       <div className="modal-container">
-          <div className="dropdown-container">
-      <label className="dropdown-label">
-        <strong>Select Property for Analysis Color:</strong>
-        <select className="dropdown-select" value={selectedProperty} onChange={handleSelectChange}>
-          {Object.keys(selectedProperties).map((property) => (
-            <option key={property} value={property} className="dropdown-option">
-              {property}
-            </option>
-          ))}
-        </select>
-      </label>
-    </div>
-      <div className="checkbox-section">
-      
-      <div style={{ marginBottom: "20px" }}>
-        <h4>Filter Properties</h4>
-        {Object.keys(selectedProperties).map((property) => (
-          <div key={property} className="checkbox-item">
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedProperties[property]}
-                onChange={() => handlePropertyCheckboxChange(property)}
-              />
-              <span className="indicator"></span>
-              {property}
-            </label>
-          </div>
-        ))}
-      </div>
-    </div>
-    <h3>Table Data</h3>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ backgroundColor: "#f2f2f2" }}>
-                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Kecamatan</th>
-                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Kode kecamatan</th>
-                
-                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Tahun</th>
-                <th style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>Data</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredFeatures.map((feature) => (
-                <tr key={feature.properties.kecamatan} style={{ backgroundColor: "#fafafa" }}>
-                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                    {feature.properties.kecamatan}
-                  </td>
-                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                    {feature.properties.kode_kecam}
-                  </td>
-                  
-                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
-                    {feature.properties.tahun}
-                  </td>
-                  <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>
-                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                      <tbody>
-                        {Object.entries(feature.properties)
-                          .filter(([key]) => key !== 'geom' && selectedProperties[key] !== false)
-                          .map(([key, value], index) => (
-                            <tr key={index} style={{ backgroundColor: index % 2 === 0 ? "#fafafa" : "white" }}>
-                              <td style={{ padding: "5px", borderBottom: "1px solid #ddd" }}>{key}</td>
-                              <td style={{ padding: "5px", borderBottom: "1px solid #ddd" }}>{value}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
+        <div className="dropdown-container">
+          <label className="dropdown-label">
+            <strong>Select Property for Analysis Color:</strong>
+            <select className="dropdown-select" value={selectedProperty} onChange={handleSelectChange}>
+              {Object.keys(selectedProperties).map((property) => (
+                <option key={property} value={property} className="dropdown-option">
+                  {property}
+                </option>
               ))}
-            </tbody>
-          </table>
-          <button
-            onClick={handleClick}
-            style={{
-              position: "fixed",
-              top: "160px",
-              right: "50px",
-              width: "30px",
-              height: "30px",
-              backgroundColor: "red",
-              color: "white",
-              border: "none",
-              borderRadius: "50%",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 1001,
-            }}
-          >
-            X
-          </button>
+            </select>
+          </label>
         </div>
-     
+        <div className="checkbox-section">
+          <div style={{ marginBottom: "20px" }}>
+            <h4>Filter Properties</h4>
+            {Object.keys(selectedProperties).map((property) => (
+              <div key={property} className="checkbox-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={selectedProperties[property]}
+                    onChange={() => handlePropertyCheckboxChange(property)}
+                  />
+                  <span className="indicator"></span>
+                  {property}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <h3>Table Data</h3>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+              {Object.keys(selectedProperties).filter(property => property !== 'geom').map((property) =>
+                selectedProperties[property] ? (
+                  <th key={property} style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
+                    {property}
+                  </th>
+                ) : null
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredFeatures.map((feature, index) => (
+              <tr key={index} style={{ backgroundColor: "#fafafa" }}>
+                {Object.keys(selectedProperties).filter(property => property !== 'geom').map((property) =>
+                  selectedProperties[property] ? (
+                    <td key={property} style={{ padding: "10px", borderBottom: "1px solid #ddd", textAlign: "center" }}>
+                      {feature.properties[property]}
+                    </td>
+                  ) : null
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button
+          onClick={handleClick}
+          style={{
+            position: "fixed",
+            top: "160px",
+            right: "50px",
+            width: "30px",
+            height: "30px",
+            backgroundColor: "red",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1001,
+          }}
+        >
+          X
+        </button>
+      </div>
     </>
   );
 };

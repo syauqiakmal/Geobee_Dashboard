@@ -18,7 +18,7 @@
   z-index: 1000;
   max-height: 52vh;
   overflow-y: scroll;
-  width: 360px;
+  width: 500px;
 }
 /* Container styling */
 .dropdown-container {
@@ -70,7 +70,7 @@
   width: 250px; /* Increased width for better readability */
   font-family: Arial, sans-serif;
   position: absolute; /* Ensure positioning is absolute */
-  right: 430px;
+  right: 570px;
   top: 150px;
   max-height: 400px; /* Adjust height as needed */
   overflow-y: auto; /* Enable vertical scrolling */
@@ -185,7 +185,7 @@ form {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - 42.5px); /* Adjusted to fit within the expanded form */
+  width: calc(100% - 42.5px); 
   height: 42.5px;
   line-height: 30px;
   outline: 0;
@@ -196,7 +196,8 @@ form {
   padding: 0 20px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.194);
 
-}
+} 
+
 
 
 
