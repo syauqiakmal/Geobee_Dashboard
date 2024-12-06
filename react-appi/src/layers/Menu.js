@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import logo from "../Logo/Logo GeoBee (Title).png";
 import logo2 from "../Logo/Logo GeoBee (Map).png";
+import { Link } from 'react-router-dom';
+
 
 const Menu = ({
   selectedOption,
@@ -61,8 +63,10 @@ const Menu = ({
       </label>
       <hr className="divider-vertical" /> {/* Pembatas */}
       <div className="menu-logo-container">
+      <Link to="/">
         <img src={logo2} alt="Logo" className="logo2" />
         <img src={logo} alt="Logo" className="logo" />
+        </Link>
       </div>
       <div className={`dashboard-links ${isMenuOpen ? "open" : ""}`}>
         <ul>

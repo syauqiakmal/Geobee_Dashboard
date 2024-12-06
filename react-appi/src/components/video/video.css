@@ -1,0 +1,116 @@
+.video-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 40px;
+  background-color: #E6F4FB;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap; /* Allow items to wrap if needed */
+}
+
+.video-player-wrapper {
+  max-width: 45%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Make it flexible */
+  min-width: 280px; /* Ensure it doesn't get too small */
+}
+
+.video-player {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.video-title {
+  max-width: 50%;
+  padding-left: 40px;
+  flex: 1; /* Make it flexible */
+  min-width: 280px; /* Ensure it doesn't get too small */
+}
+
+.video-title h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: left;
+}
+
+.video-title p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+/* Responsive Design for Tablets and Smaller Devices */
+@media (max-width: 1024px) {
+  .video-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+  }
+
+  .video-player-wrapper {
+    max-width: 80%;
+    margin-bottom: 20px;
+  }
+
+  .video-title {
+    max-width: 90%;
+    padding-left: 20px;
+    text-align: center;
+  }
+
+  .video-title h2 {
+    font-size: 1.8rem;
+  }
+
+  .video-title p {
+    font-size: 0.95rem;
+  }
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 768px) {
+  .video-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .video-player-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .video-title {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .video-title h2 {
+    font-size: 1.5rem;
+  }
+
+  .video-title p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+  .video-container {
+    padding: 15px;
+  }
+
+  .video-title h2 {
+    font-size: 1.2rem;
+  }
+
+  .video-title p {
+    font-size: 0.8rem;
+  }
+}

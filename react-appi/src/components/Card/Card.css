@@ -1,0 +1,126 @@
+h1 {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.image-container {
+  max-width: 500px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.button-container {
+  display: flex;
+  align-items: center !important;
+  gap: 15px;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.selengkapnya-link {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #0073e6; /* Customize link color */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.visit-map-button {
+  display: inline-block;
+  background-color: #0073e6; /* Customize button color */
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.visit-map-button:hover {
+  background-color: #005bb5; /* Darker shade on hover */
+}
+
+.nav-button {
+  background-color: #0073e6;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin: 0px 2px;
+  transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+  background-color: #005bb5;
+}
+
+.nav-button svg {
+  width: 16px;
+  height: 16px;
+  fill: white;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 0.85rem;
+  }
+
+  .image-container {
+    width: 50px;
+  }
+
+  .visit-map-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .selengkapnya-link{
+    font-size: 0.8rem;
+  }
+
+  .image-container {
+    max-width: 200px;
+  }
+
+  .visit-map-button {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  .button-container{
+    margin-bottom: 10px;
+  }
+
+  .nav-button {
+    width: 25px;
+    height: 25px;
+  }
+}

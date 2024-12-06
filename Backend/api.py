@@ -18,6 +18,7 @@ from rasterio.warp import calculate_default_transform, reproject, Resampling
 from pyproj import CRS, Transformer
 import rasterio
 from shapely.ops import transform
+import numpy as np
 
 import geopandas as gpd
 
@@ -228,12 +229,21 @@ def process_shapefile(file_path, table_name, srid=4326):
         preprocess_shapefile(file_path, temp_shapefile_path, srid)
 
         # Read the preprocessed shapefile (use the temp_shapefile_path)
-        with shapefile.Reader(temp_shapefile_path) as shp:
+
+        with shapefile.Reader(temp_shapefile_path, encoding='ISO-8859-1') as shp:
             fields = shp.fields[1:]  # Skip deletion field
             field_names = [field[0].lower() for field in fields]
 
-            if 'id' in field_names:
-                field_names.remove('id')
+            # Avoid conflicts with reserved SQL keywords
+            field_names = ['data_' + field if field in ['id'] else field for field in field_names]
+            
+            #  with shapefile.Reader(temp_shapefile_path) as shp:
+            # fields = shp.fields[1:]  # Skip deletion field
+            # field_names = [field[0].lower() for field in fields]
+
+            # if 'id' in field_names:
+            #     field_names.remove('id')
+
 
             # Create table with dynamic fields
             field_definitions = ", ".join([f'"{field_name}" VARCHAR' for field_name in field_names])
@@ -544,75 +554,98 @@ async def get_data(table_name: str):
         print("Error:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+def process_raster_data(data, nodata_value):
+    """Process and normalize raster data, handling nodata values."""
+    # Replace nodata values with NaN
+    data[data == nodata_value] = np.nan
+    
+    # Check if there are valid values left
+    if np.isnan(data).all():
+        return None
+    
+    # Normalize the valid data to the range [0, 255]
+    data_min = np.nanmin(data)
+    data_max = np.nanmax(data)
+    if data_min == data_max:  # Handle case where all values are the same
+        return np.zeros_like(data, dtype='uint8')
+    
+    normalized_data = ((data - data_min) / (data_max - data_min) * 255).astype('uint8')
+    return normalized_data
 
 @app.get("/raster/{table_name}")
 async def get_raster(table_name: str):
+    table_name = normalize_table_name(table_name)
     try:
-        conn = psycopg2.connect(
+        # Connect to the database
+        with psycopg2.connect(
             host="localhost",
             port="5432",
             dbname="nyoba",
             user="postgres",
             password="15032003"
-        )
-        cursor = conn.cursor()
-        table_name = normalize_table_name(table_name)
+        ) as conn:
+            with conn.cursor() as cursor:
+                query = f'SELECT ST_AsGDALRaster(rast, \'GTiff\') FROM "{table_name}"'
+                cursor.execute(query)
+                raster_rows = cursor.fetchall()
 
-        query = f'SELECT ST_AsGDALRaster(rast, \'GTiff\') FROM "{table_name}"'
-        cursor.execute(query)
-        raster_rows = cursor.fetchall()
+                if not raster_rows:
+                    raise HTTPException(status_code=404, detail="No raster data found in the table.")
 
-        raster_images = []
-        converted_bounds = []
-        for row in raster_rows:
-            raster_data = row[0]
+                raster_images = []
+                bounds_list = []
 
-            with MemoryFile(raster_data) as memfile:
-                with memfile.open() as dataset:
-                    data = dataset.read()
+                for row in raster_rows:
+                    raster_data = row[0]
 
-                    if data is None or data.shape[0] == 0:
-                        raise HTTPException(status_code=404, detail="No valid raster data available.")
+                    with MemoryFile(raster_data) as memfile:
+                        with memfile.open() as dataset:
+                            data = dataset.read(1)  # Read the first band
+                            nodata_value = dataset.nodata
 
-                    if data.shape[0] == 1:
-                        data_normalized = ((data[0] - data[0].min()) / (data[0].max() - data[0].min()) * 255).astype('uint8')
-                        image = Image.fromarray(data_normalized, mode='L')
-                    else:
-                        bands = []
-                        for band in data:
-                            band_normalized = ((band - band.min()) / (band.max() - band.min()) * 255).astype('uint8')
-                            bands.append(band_normalized)
-                        
-                        image = Image.merge('RGB', [Image.fromarray(band) for band in bands[:3]])
+                            # Process the raster data
+                            processed_data = process_raster_data(data, nodata_value)
 
-                    img_byte_array = BytesIO()
-                    image.save(img_byte_array, format='PNG')
-                    raster_images.append(img_byte_array.getvalue())
+                            if processed_data is None:
+                                continue
 
-                    bbox = dataset.bounds
+                            # Convert processed data to image
+                            image = Image.fromarray(processed_data, mode='L')
+                            img_byte_array = BytesIO()
+                            image.save(img_byte_array, format='PNG')
+                            raster_images.append(img_byte_array.getvalue())
 
-                    # Only perform CRS transformation if necessary
-                    transformer = Transformer.from_crs("epsg:4326", "epsg:4326", always_xy=True)
-                    bounds = [[bbox.left, bbox.bottom], [bbox.right, bbox.top]]
-                    converted_bounds = [transformer.transform(*coord) for coord in bounds]
+                            # Get bounding box and transform to EPSG:4326 if needed
+                            bbox = dataset.bounds
+                            if dataset.crs.to_string() != 'EPSG:4326':
+                                transformer = Transformer.from_crs(dataset.crs, 'epsg:4326', always_xy=True)
+                                bounds = [[bbox.left, bbox.bottom], [bbox.right, bbox.top]]
+                                converted_bounds = [transformer.transform(*coord) for coord in bounds]
+                                converted_bounds = [
+                                    [converted_bounds[0][1], converted_bounds[0][0]],
+                                    [converted_bounds[1][1], converted_bounds[1][0]]
+                                ]
+                            else:
+                                converted_bounds = [
+                                    [bbox.bottom, bbox.left],
+                                    [bbox.top, bbox.right]
+                                ]
+                            bounds_list.append(converted_bounds)
 
-                    # Swap lat/lng for correct bounds representation
-                    converted_bounds = [[converted_bounds[0][1], converted_bounds[0][0]], [converted_bounds[1][1], converted_bounds[1][0]]]
+                if not raster_images:
+                    raise HTTPException(status_code=404, detail="No valid raster images available.")
 
-        cursor.close()
-        conn.close()
+                # Encode images to base64 for response
+                encoded_raster_images = [base64.b64encode(img).decode() for img in raster_images]
+                
+                return JSONResponse(content={"raster_images": encoded_raster_images, "bounds": bounds_list})
 
-        if not raster_images:
-            raise HTTPException(status_code=404, detail="No raster images available.")
-
-        encoded_raster_images = [base64.b64encode(img).decode() for img in raster_images]
-
-        return JSONResponse(content={"raster_images": encoded_raster_images, "bounds": converted_bounds})
-    except HTTPException:
-        raise
+    except HTTPException as http_err:
+        raise http_err
     except Exception as e:
         print("Error:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
+    
     
 @app.get("/geojson/{table_name}")
 async def get_geojson(table_name: str):

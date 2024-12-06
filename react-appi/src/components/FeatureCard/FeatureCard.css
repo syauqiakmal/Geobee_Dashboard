@@ -1,0 +1,211 @@
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 372px;
+  height: 400px;
+  overflow: hidden;
+}
+
+.feature-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.feature-icon {
+  background-color: #E6F4FB; /* Circle background color */
+  border-radius: 50%; /* Make the background a circle */
+  width: 50px; /* Set the width of the circle */
+  height: 50px; /* Set the height of the circle */
+  z-index: 2;
+  display: flex;
+  align-items: center; /* Center the icon vertically */
+  justify-content: center;
+}
+
+.icon {
+  margin: auto;
+}
+
+.feature-image{
+  width: 298px;
+  height: auto;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.feature-card-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 3; /* Ensure the text appears above the image */
+  text-align: left;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.feature-text{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+  position: relative;
+  text-align: left;
+}
+
+.feature-title {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  max-width: 250px;
+}
+
+.feature-description {
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400px;
+}
+
+@media (max-width: 1295px) {
+  .feature-card {
+    padding: 15px;
+    max-width: 330px;
+    height: 350px;
+  }
+
+  .feature-image{
+    max-width: 250px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .feature-title {
+    font-size: 24px;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+  .feature-description {
+    font-size: 16px;
+    margin: 0px;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .feature-card {
+    padding: 15px;
+    max-width: 250px;
+    height: 350px;
+  }
+
+  .feature-image{
+    max-width: 250px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .feature-title {
+    font-size: 22px;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+  .feature-description {
+    font-size: 14px;
+    margin: 0px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .feature-card {
+    padding: 15px;
+    max-width: 200px;
+    height: 350px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .feature-title {
+    font-size: 20px;
+    margin: 0px;
+  }
+
+  .feature-description {
+    font-size: 12px;
+    margin: 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-card {
+    padding: 10px;
+    max-width: 400px;
+    height: 250px;
+  }
+
+  .feature-card-content {
+    padding: 0px;
+  }
+
+  .feature-image{
+    max-width: 300px;
+  }
+
+  .feature-title {
+    font-size: 18px;
+  }
+
+  .feature-description {
+    font-size: 11px;
+    margin: 0px;
+  }
+}
+
+
+/* For Mobile Screens 375px */
+@media (max-width: 375px) {
+  .feature-card {
+    padding: 10px;
+    max-width: 320px;
+    height: 300px;
+  }
+
+  .feature-card-content {
+    padding: 0px;
+  }
+
+  .feature-image{
+    max-width: 300px;
+  }
+}
+
+/* For Mobile Screens 320px */
+@media (max-width: 320px) {
+  .feature-card {
+    max-width: 260px;
+    height: 250px;
+  }
+
+  .feature-image{
+    max-width: 200px;
+  }
+}

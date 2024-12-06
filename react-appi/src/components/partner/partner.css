@@ -1,0 +1,38 @@
+.partner-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  background-color: #fff;
+  flex-direction: column;
+}
+
+.partner-slider {
+  display: flex;
+  gap: 40px;
+  animation: slide 20s linear infinite;
+}
+
+.partner-logo {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.partner-logo:hover {
+  transform: scale(1.1);
+}
+
+/* Keyframes untuk animasi sliding */
+/* @keyframes slide {
+  0% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
+ */

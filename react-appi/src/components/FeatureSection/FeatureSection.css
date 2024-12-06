@@ -1,0 +1,77 @@
+/* Feature Section Container */
+.feature-section {
+  padding: 80px;
+  background: #E6F4FB;
+  background-image: url('../assets/big-ring.png'); /* Path to your texture image */
+  background-repeat: no-repeat;
+  background-position: right top; /* Position the texture image to the right */
+  background-size: 30%; /* Adjust the size of the texture image */
+  margin: auto;
+  display: grid;
+  align-items: center;
+}
+
+.feature-section-content {
+  text-align: left;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.feature-section-content h2 {
+  font-size: 2rem;
+  margin: 0 0 16px;
+  font-weight: bold;
+  text-align: top;
+}
+
+.feature-section-content p {
+  font-size: 1rem;
+}
+
+.feature-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  max-width: 1280px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .feature-section {
+    text-align: center;
+  }
+
+  .feature-section-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .feature-section-grid {
+    grid-template-columns: 1fr; /* One card per row */
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-section-grid {
+    grid-template-columns: 1fr 1fr 1fr; /* One card per row */
+    gap: 5px;
+  }
+
+  .feature-section {
+    padding: 20px;
+  }
+
+  .feature-section-content h2 {
+    font-size: 1.25rem;
+  }
+
+  .feature-section-content p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .feature-section-grid {
+    grid-template-columns: 1fr; /* One card per row */
+    gap: 16px;
+  }
+}

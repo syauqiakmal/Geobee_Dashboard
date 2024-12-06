@@ -1,0 +1,57 @@
+/* Team Grid Section */
+.team-grid-section {
+  padding: 40px;
+  padding-bottom: 0px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #333;
+  margin-bottom: 40px;
+ 
+}
+
+/* Title Tetap di Tengah */
+.team-grid-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center; 
+}
+
+
+/* Team Grid Container */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px;
+  justify-content: center; 
+  justify-items: center;
+  align-items: center; 
+  width: 100%;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr); /* Tiga kartu per baris */
+  }
+}
+
+@media (max-width: 768px) {
+  .team-grid {
+    grid-template-columns: 1fr 1fr; /* Dua kartu per baris */
+    gap: 15px;
+  }
+}
+
+@media (max-width: 425px) {
+  .team-grid {
+    grid-template-columns: 1fr; /* Satu kartu per baris */
+    gap: 15px;
+  }
+}
+
+
+
+

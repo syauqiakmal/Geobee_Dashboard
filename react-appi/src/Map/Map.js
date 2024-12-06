@@ -26,6 +26,9 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { MapLibreSearchControl } from "@stadiamaps/maplibre-search-box";
 import "@stadiamaps/maplibre-search-box/dist/style.css";
+import './map.css';
+
+import 'leaflet/dist/leaflet.css'
 
 // import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
 // import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
@@ -105,20 +108,58 @@ export const Map = ({ hideComponents }) => {
     if (selectedOption === "Maplibre") {
       maplibreRef.current = new maplibregl.Map({
         container: "maplibre-map",
-        center: [106.827153, -6.17806], // Example center point (Jakarta)
+        center: [106.837160, -6.17920], // Example center point (Jakarta)
         zoom: 17,
-        pitch: 80,
+        pitch: 100,
         bearing: 40,
         antialias: true,
-        style:
-          "https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL", // MapTiler hybrid style
+        style: {
+          version: 8,
+          sources: {
+            osm: {
+              type: 'raster',
+              tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+              tileSize: 256,
+              attribution: '&copy; OpenStreetMap Contributors',
+              
+            }
+          },// Use a different source for terrain and hillshade layers, to improve render quality
+          terrainSource: {
+              type: 'raster-dem',
+              url: 'https://demotiles.maplibre.org/terrain-tiles/tiles.json',
+              tileSize: 256
+          },
+          hillshadeSource: {
+              type: 'raster-dem',
+              url: 'https://demotiles.maplibre.org/terrain-tiles/tiles.json',
+              tileSize: 256
+          },
+      
+          layers: [
+            {
+                id: 'osm',
+                type: 'raster',
+                source: 'osm'
+            },
+            
+        ],
+        terrain: {
+            source: 'terrainSource',
+            exaggeration: 2
+        },
+        sky: {}
+    },
+    maxZoom: 18,
+    maxPitch: 75
+
+        
       });
 
       maplibreRef.current.on("load", () => {
         // Add terrain source (raster-dem from MapTiler)
         maplibreRef.current.addSource("terrainSource", {
           type: "raster-dem",
-          url: `https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL`,
+          url: `https://demotiles.maplibre.org/terrain-tiles/tiles.json`,
           tileSize: 256,
         });
 
@@ -132,13 +173,7 @@ export const Map = ({ hideComponents }) => {
           },
         });
 
-        // Add terrain control
-        maplibreRef.current.addControl(
-          new maplibregl.TerrainControl({
-            source: "terrainSource",
-            exaggeration: 2,
-          })
-        );
+       
 
         // Search control and reverse geocoding
         const control = new MapLibreSearchControl({

@@ -4,7 +4,7 @@ import { Map } from "../Map/Map.js";
 import React, { useState, useRef, useCallback } from "react";
 import { toPng } from "html-to-image";
 
-export const PrintLayer = () => {
+function PrintLayer() {
     const [hideComponents, setHideComponents] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const mapRef = useRef();
@@ -100,3 +100,4 @@ export const PrintLayer = () => {
         </div>
     );
 };
+export default PrintLayer;

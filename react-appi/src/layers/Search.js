@@ -103,7 +103,7 @@ const clearInput = () => {
     ))}
   </datalist>
   
-  <button type="submit" className="fa fa-search"></button>
+  <button type="submit" className="subsearch fa fa-search"></button>
 
 </form>
 
