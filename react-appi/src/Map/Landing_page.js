@@ -9,7 +9,7 @@ import Footer from '../components/Footer/Footer.js';
 import VideoComponent from '../components/video/video.js'
 import Partner from '../components/partner/partner.js'
 import ProjectInfo from '../components/ProjectInfo/ProjectInfo.js';
-import Test from '../components/test/test.js';
+
 
 function Landing() {
   return (
@@ -37,7 +37,7 @@ function Landing() {
 
       <TeamGrid />
       <Partner />
-      <Test/>
+      
       <VideoComponent />
       <section id="contact-section">
         <Footer />
