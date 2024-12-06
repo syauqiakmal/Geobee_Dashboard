@@ -435,7 +435,8 @@ def insert_geotiff_to_postgis(geotiff_path, table_name, srid=4326):
 
         # Construct the raster2pgsql command
         raster2pgsql_command = [
-            "C:\\Program Files\\PostgreSQL\\16\\bin\\raster2pgsql.exe",
+            # "C:\\Program Files\\PostgreSQL\\16\\bin\\raster2pgsql.exe", # Windows
+            "raster2pgsql", # linux
             "-s", str(srid),  # Use the provided SRID
             "-I",
             "-C",
