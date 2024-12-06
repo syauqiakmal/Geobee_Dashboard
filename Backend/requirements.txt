@@ -1,0 +1,12 @@
+fastapi
+pillow
+psycopg2-binary 
+geojson
+pyshp
+rasterio
+pyproj
+shapely
+geopandas
+python-multipart
+uvicorn
+poetry==1.1.8
