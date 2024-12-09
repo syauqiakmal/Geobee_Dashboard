@@ -425,7 +425,7 @@ export const Map = ({ hideComponents }) => {
 
     try {
       // Upload file
-      const uploadResponse = await fetch("http://localhost:8000/upload", {
+      const uploadResponse = await fetch("http://35.209.156.52:8000/upload", {
         method: "POST",
         body: formData,
       });
@@ -437,7 +437,7 @@ export const Map = ({ hideComponents }) => {
       // Handle zipped shapefile
       if (file.name.endsWith(".zip")) {
         const dataResponse = await fetch(
-          `http://localhost:8000/data/${tableName}`
+          `http://35.209.156.52:8000/data/${tableName}`
         );
         if (!dataResponse.ok) {
           throw new Error("Failed to fetch shapefile data");
@@ -459,7 +459,7 @@ export const Map = ({ hideComponents }) => {
       // Handle raster file
       else if (file.name.endsWith(".tif") || file.name.endsWith(".tiff")) {
         const dataResponse = await fetch(
-          `http://localhost:8000/raster/${tableName}`
+          `http://35.209.156.52:8000/raster/${tableName}`
         );
         if (!dataResponse.ok) {
           throw new Error("Failed to fetch raster data");
@@ -502,7 +502,7 @@ export const Map = ({ hideComponents }) => {
       // Handle geojson file
       else if (file.name.endsWith(".geojson")) {
         const dataResponse = await fetch(
-          `http://localhost:8000/geojson/${tableName}`
+          `http://35.209.156.52:8000/geojson/${tableName}`
         );
         if (!dataResponse.ok) {
           throw new Error(
@@ -543,7 +543,7 @@ export const Map = ({ hideComponents }) => {
   //       // Fetching cluster data
   //       const clusterPromises = years.map((year) =>
   //         fetch(
-  //           `http://localhost:8000/data/clustering_Kelurahan_Tangerang_${year}`
+  //           `http://35.209.156.52:8000/data/clustering_Kelurahan_Tangerang_${year}`
   //         ).then((res) => res.json())
   //       );
 
@@ -619,12 +619,12 @@ export const Map = ({ hideComponents }) => {
   
         // Fetching GeoJSON data
         const geojsonPromises = years.map(year =>
-          fetch(`http://localhost:8000/data/Tangerang_baru_${year}`).then(res => res.json())
+          fetch(`http://35.209.156.52:8000/data/Tangerang_baru_${year}`).then(res => res.json())
         );
   
         // Fetching cluster data
         const clusterPromises = years.map(year =>
-          fetch(`http://localhost:8000/data/cluster_in_tangerang_${year}`).then(res => res.json())
+          fetch(`http://35.209.156.52:8000/data/cluster_in_tangerang_${year}`).then(res => res.json())
         );
   
         // Waiting for both fetches to complete
