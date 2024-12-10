@@ -28,3 +28,4 @@ EXPOSE 3000
 # Define the command to run the application with correct port and SPA handling
 # CMD ["serve", "-s", "build", "-l", "3000"]
 CMD ["serve", "-s", "build", "-l", "3000", "--ssl-cert", "cert/geobee_id_cert.pem", "--ssl-key", "cert/geobee-tangerang"]
+
