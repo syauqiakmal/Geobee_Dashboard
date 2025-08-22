@@ -3,7 +3,7 @@
 
 <div align="center">
 
-![GeoBee Banner]((https://research.binus.ac.id/geoecoai/wp-content/uploads/sites/21/2024/08/Logo-Geobee-Geodashboard-1.png))
+![GeoBee Banner](https://research.binus.ac.id/geoecoai/wp-content/uploads/sites/21/2024/08/Logo-Geobee-Geodashboard-1.png)
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)](https://fastapi.tiangolo.com/)
@@ -289,10 +289,7 @@ We welcome contributions from the community! Here's how you can help:
 ## 📞 **Support & Community**
 
 ### Documentation
-- [Installation Guide](docs/installation.md)
-- [API Documentation](docs/api.md)
-- [User Manual](docs/user-guide.md)
-- [Developer Guide](docs/development.md)
+(https://research.binus.ac.id/geoecoai/2024/08/13/geo-ai-workshop/)
 
 ### Community
 - **GitHub Issues**: Bug reports and feature requests
