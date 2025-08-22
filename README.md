@@ -3,7 +3,7 @@
 
 <div align="center">
 
-![GeoBee Banner](https://via.placeholder.com/800x200/2E8B57/FFFFFF?text=🐝+GeoBee+Dashboard+-+Buzzing+with+Geo-Intelligence)
+![GeoBee Banner]([https://via.placeholder.com/800x200/2E8B57/FFFFFF?text=🐝+GeoBee+Dashboard+-+Buzzing+with+Geo-Intelligence](https://research.binus.ac.id/geoecoai/wp-content/uploads/sites/21/2024/08/Logo-Geobee-Geodashboard-1.png))
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)](https://fastapi.tiangolo.com/)
