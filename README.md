@@ -244,17 +244,17 @@ We welcome contributions from the community! Here's how you can help:
 ## 🗺️ **Roadmap**
 
 ### Phase 1: Core Platform (Current)
-- [x] Basic spatial data management
-- [x] Shapefile upload and processing
-- [x] Interactive mapping interface
-- [x] User authentication system
-- [x] Basic analytics dashboard
+- [ ] Basic spatial data management
+- [ ] Shapefile upload and processing
+- [ ] Interactive mapping interface
+- [ ] User authentication system
+- [ ] Basic analytics dashboard
 
 ### Phase 2: Advanced Analytics (Q2 2024)
-- [x] Machine learning integration
-- [x] Predictive waste modeling
-- [x] Advanced visualization options
-- [x] Real-time data integration
+- [ ] Machine learning integration
+- [ ] Predictive waste modeling
+- [ ] Advanced visualization options
+- [ ] Real-time data integration
 
 
 ---
